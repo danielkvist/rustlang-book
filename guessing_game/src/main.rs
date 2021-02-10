@@ -9,31 +9,40 @@ fn main() {
     // Creates a random number generator and uses it.
     let secret_number = rand::thread_rng().gen_range(1, 101);
 
-    println!("The secret number is: {}", secret_number);
-    println!("Please input your guess:");
+    // Creates an infinite loop.
+    loop {
+        println!("Please input your guess:");
 
-    // In Rust variables are immutable by default so
-    // we use mut before the variable name to make
-    // the variable mutable.
-    let mut guess = String::new(); // Returns a new instance of String.
-                                   // ::new() indicates that new is an associated function
-                                   // of the String type.
+        // In Rust variables are immutable by default so
+        // we use mut before the variable name to make
+        // the variable mutable.
+        let mut guess = String::new(); // Returns a new instance of String.
+                                       // ::new() indicates that new is an associated function
+                                       // of the String type.
 
-    // Now we call the stdin() function from the io library.
-    io::stdin()
-        .read_line(&mut guess) // & indicates a reference.
-        .expect("Failed to read line"); // handles a possible error.
+        // Now we call the stdin() function from the io library.
+        io::stdin()
+            .read_line(&mut guess) // & indicates a reference.
+            .expect("Failed to read line"); // handles a possible error.
 
-    // We shadow the prev guess variable parsing the previous
-    // value in guess into an u32 int.
-    let guess: u32 = guess.trim().parse().expect("Please enter a number!");
+        // We shadow the prev guess variable parsing the previous
+        // value in guess into an u32 int.
+        let guess: u32 = match guess.trim().parse() {
+            // Ignores bad input from the user.
+            Ok(num) => num,
+            Err(_) => continue,
+        };
 
-    // Here the {} is a placeholder
-    println!("You guessed: {}", guess);
+        // Here the {} is a placeholder
+        println!("You guessed: {}", guess);
 
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal => println!("You win!"),
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }
     }
 }
