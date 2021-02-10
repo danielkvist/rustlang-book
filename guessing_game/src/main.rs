@@ -1,4 +1,5 @@
 use rand::Rng;
+use std::cmp::Ordering;
 use std::io; // Imports the io library from the standard library.
 
 // Entry point of the program.
@@ -23,6 +24,16 @@ fn main() {
         .read_line(&mut guess) // & indicates a reference.
         .expect("Failed to read line"); // handles a possible error.
 
+    // We shadow the prev guess variable parsing the previous
+    // value in guess into an u32 int.
+    let guess: u32 = guess.trim().parse().expect("Please enter a number!");
+
     // Here the {} is a placeholder
     println!("You guessed: {}", guess);
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
 }
