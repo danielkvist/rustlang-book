@@ -1,8 +1,14 @@
+use rand::Rng;
 use std::io; // Imports the io library from the standard library.
 
 // Entry point of the program.
 fn main() {
     println!("Guess the number!");
+
+    // Creates a random number generator and uses it.
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+
+    println!("The secret number is: {}", secret_number);
     println!("Please input your guess:");
 
     // In Rust variables are immutable by default so
